@@ -1,0 +1,27 @@
+.profile {
+    padding: ;
+}
+
+.city {
+    margin-bottom:45px;
+}
+
+.langs {
+    margin-bottom: 45px;
+}
+
+
+.social ul {
+    list-style: none;
+    display: flex;
+    padding: 0;
+}
+
+.social ul li {
+    margin: 0 5px;
+}
+
+.social li img{
+    width: 30px;
+    height: 30px;
+}
