@@ -1,20 +1,30 @@
-import {useState, useEffect} from 'react';
+import {useEffect} from 'react';
+import {Alert} from 'react-bootstrap';
 import './Profile.css';
 
+import {useDispatch, useSelector} from 'react-redux';
+import { fetchUserById } from './profileSlice';
+
 export default function Profile() {
-    const [user, setUser] = useState(
-        {city: "", languages: [], social: []}
-    );
+    const dispatch = useDispatch();
+    const {status, data, error} = useSelector(state => state.profile)
+    const {userId} = useSelector(state => state.authorization)
 
     useEffect(
         () => {
-            fetch("https://mysterious-reef-29460.herokuapp.com/api/v1/user-info/1")
-            .then(res => res.json())
-            .then(res => setUser(res.data))
+            if (status === 'idle') {
+                dispatch(fetchUserById(userId))
+            }
         }
-    , [])
+    , [status])
 
-    const {city, languages, social} = user|| {city: "", languages: [], social: []};
+    if (status === 'idle') return ''
+
+    if (status === 'loading') return 'loading...'
+
+    if (error) return <Alert variant="danger"> {error} </Alert>
+
+    const {city, languages, social} = data
 
     let socialFirstWebsite = [
         ...social.filter(s => s.label === 'web'), 

@@ -1,25 +1,29 @@
 import {useState} from 'react';
 import {Form, Button, Alert} from 'react-bootstrap';
-import {useAuth} from '../../app/auth-hook';
-import {useHistory, useLocation} from 'react-router-dom';
+import {useHistory} from 'react-router-dom';
+
+import {useDispatch, useSelector} from 'react-redux';
+import {signin} from './authorizationSlice';
+import {unwrapResult} from '@reduxjs/toolkit';
 
 export default function Login() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [emailError, setEmailError] = useState(null)
 
-    const auth = useAuth();
+    const auth = useSelector(state => state.authorization);
     const history = useHistory();
-    const location = useLocation();
-    
-    const {from} = location.state || {from: {pathname: "/"}}
+
+    const dispatch = useDispatch();
 
     const handleSubmit = (e) => {
         e.preventDefault()
-
         if( !validateEmail() ) return
-        
-        auth.signin(email, password, () => history.replace(from))
+
+        dispatch(signin({email, password}))
+        .then(r => unwrapResult(r))
+        .then(r => history.replace('/profile'))
+        .catch(e => setPassword(''))
     }
 
     const validateEmail = () => {
@@ -44,6 +48,12 @@ export default function Login() {
         }
 
         if(name) o[name](value)
+    }
+    
+    const handleKeyPress = e => {
+        if (e.key === 'Enter') {
+            console.log(e.key)
+        }
     }
     return (
         <div className="login">

@@ -1,8 +1,8 @@
 import {Route, Redirect} from 'react-router-dom';
-import {useAuth} from './auth-hook';
+import {useSelector} from 'react-redux';
 
 export default function PrivateRoute({children, ...rest}) {
-    const auth = useAuth();
+    const auth = useSelector(state => state.authorization);
 
 
     return <Route

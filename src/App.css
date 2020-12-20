@@ -6,6 +6,10 @@ header {
   padding: 10px 0 20px;
 }
 
+.header__container {
+  justify-content: space-between;
+}
+
 .app .nav-item {
   padding: 5px 10px;
 }

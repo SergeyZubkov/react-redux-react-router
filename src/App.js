@@ -8,8 +8,7 @@ import {
   Redirect
 } from "react-router-dom";
 import PrivateRoute from './app/PrivateRout';
-import LoginButton from './app/LoginButton';
-import {ProvideAuth} from './app/auth-hook';
+import LoginButton from './features/login/LoginButton';
 import Login from './features/login/Login';
 import News from './features/news/News';
 import Profile from './features/profile/Profile';
@@ -17,15 +16,11 @@ import Profile from './features/profile/Profile';
 function App() {
   return (
     <div className="app">
-       <ProvideAuth>
         <Router>
             <header>
               <Container>
-                  <Row>
+                  <Row className='header__container'>
                     <Nav>
-                      <Nav.Item>
-                        <NavLink to="/login" activeClassName='active'>Логин</NavLink>
-                      </Nav.Item>
                       <Nav.Item>
                         <NavLink to="/news" activeClassName='active'>Новости</NavLink>
                       </Nav.Item>
@@ -57,7 +52,6 @@ function App() {
             </Container>
             </main>
         </Router>
-       </ProvideAuth>
     </div>
   );
 }

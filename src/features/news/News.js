@@ -1,19 +1,27 @@
-import {useState, useEffect} from 'react';
+import {useEffect} from 'react';
+import {Alert} from 'react-bootstrap';
 import './News.css';
 
+import {useSelector, useDispatch} from 'react-redux';
+import {fetchNews} from './newsSlice';
+
 export default function News() {
-    const [news, setNews] = useState([]);
+    const {data, status, error} = useSelector(state => state.news)
+    const dispatch = useDispatch()
 
     useEffect(
         () => {
-            fetch(`https://mysterious-reef-29460.herokuapp.com/api/v1/news`)
-            .then(res => res.json())
-            .then(res => setNews(res.data))
+            if (status === 'idle') {
+                dispatch(fetchNews())
+            }
         }
-    ,[])
+    ,[status])
+    if (status === 'idle') return ''
+    if (status === 'loading') return 'loading...'
+    if (status === 'failed') return <Alert variant="danger"> {error} </Alert>
     return (
         <div className="news">
-            {news.map(
+            {data.map(
                 n => <div className='new' key={n.title}>
                     <h2>{n.title}</h2>
                     <p>
@@ -21,6 +29,9 @@ export default function News() {
                     </p>
                 </div>
             )}
+            <div className='news__count'>
+                Количество новостей: {data.length}
+            </div>
         </div>
     )
 }
